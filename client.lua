@@ -29,8 +29,12 @@ function SetOptions(bodyOptions, shirtOptions, pantOptions, shoeOptions, hairOpt
 	ExecuteWebJS(webview, "SetCharacterOptions('shoes', '".. shoeOptions .."')")
 
 	ShowMouseCursor(true)
+	SetIgnoreMoveInput(true);
 	SetInputMode(INPUT_GAMEANDUI)
 	SetWebVisibility(webview, WEB_VISIBLE)
+
+	SetCameraLocation(700,0,0,false)
+	SetCameraRotation(0,180,0,false)
 end
 AddRemoteEvent("characterize:SetOptions", SetOptions)
 
@@ -39,7 +43,11 @@ function HidePanel()
 	DestroyWebUI(webview)
 	webview = nil
 	ShowMouseCursor(false)
+	SetIgnoreMoveInput(false);
 	SetInputMode(INPUT_GAME)
+
+   	SetCameraLocation(0, 0, 0, false)
+	SetCameraRotation(0, 0, 0, false)
 end
 AddEvent("characterize:HidePanel", HidePanel)
 
