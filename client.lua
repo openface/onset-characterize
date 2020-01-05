@@ -32,6 +32,7 @@ function SetOptions(bodyOptions, shirtOptions, pantOptions, shoeOptions, hairOpt
 	SetInputMode(INPUT_GAMEANDUI)
 	SetWebVisibility(webview, WEB_VISIBLE)
 
+	--ExecuteWebJS(webview, "alert('".. .."')")
 	--SetCameraLocation(700,0,0,false)
 	--SetCameraRotation(0,180,0,false)
 end
@@ -51,30 +52,44 @@ end
 AddEvent("characterize:HidePanel", HidePanel)
 
 function Change(type, value)
+	CreateSound("click.wav")
+
 	local player = GetPlayerId()
 	if (type == 'preset') then
+		RemoveAllClothes(player)
 		SetPlayerClothingPreset(player, value)
 	elseif (type == 'body') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Body")
 		SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
-		SkeletalMeshComponent:SetFloatParameterOnMaterials("PupilScale", 1.3)
+		SkeletalMeshComponent:SetFloatParameterOnMaterials("PupilScale", 1.5)
 	elseif (type == 'hair') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing0")
     	SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
 	elseif (type == 'shirt') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing1")
-    	SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
+		if (value == -1) then
+			SkeletalMeshComponent:SetSkeletalMesh(nil)
+		else
+			SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
+		end
 	elseif (type == 'pants') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing4")
     	SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
 	elseif (type == 'shoes') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing5")
-    	SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
+		if (value == -1) then
+			SkeletalMeshComponent:SetSkeletalMesh(nil)
+		else
+			SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
+		end		
 	elseif (type == 'hair_color') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing0")
 		local r, g, b, a = HexToRGBAFloat("0x"..value)
 		SkeletalMeshComponent:SetColorParameterOnMaterials("Hair Color", FLinearColor(r, g, b, a))
 	elseif (type == 'shirt_color') then
+        SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(GetPlayerId(), "Clothing2")
+        SkeletalMeshComponent:SetSkeletalMesh(nil)
+
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing1")
 		local r, g, b, a = HexToRGBAFloat("0x"..value)
 		SkeletalMeshComponent:SetColorParameterOnMaterials("Clothing Color", FLinearColor(r, g, b, a))
@@ -82,10 +97,7 @@ function Change(type, value)
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing4")
 		local r, g, b, a = HexToRGBAFloat("0x"..value)
 		SkeletalMeshComponent:SetColorParameterOnMaterials("Clothing Color", FLinearColor(r, g, b, a))
-
 	end
-
-	CreateSound("click.wav")
 end
 AddEvent("characterize:Change", Change)
 
@@ -95,3 +107,19 @@ function Submit(params)
 end
 AddEvent("characterize:Submit", Submit)
 
+function RemoveAllClothes(player)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Body")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing0")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing1")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing2")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing3")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing4")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+	SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing5")
+	SkeletalMeshComponent:SetSkeletalMesh(nil)
+end
