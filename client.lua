@@ -20,10 +20,9 @@ function OnWebLoadComplete(webid)
 end
 AddEvent("OnWebLoadComplete", OnWebLoadComplete)
 
-function SetOptions(bodyOptions, shirtOptions, pantOptions, shoeOptions, hairOptions, hairColorOptions)
+function SetOptions(bodyOptions, shirtOptions, pantOptions, shoeOptions, hairOptions)
 	ExecuteWebJS(webview, "SetCharacterOptions('body', '".. bodyOptions .."')")
 	ExecuteWebJS(webview, "SetCharacterOptions('hair', '".. hairOptions .."')")
-	ExecuteWebJS(webview, "SetCharacterOptions('hair_color', '".. hairColorOptions .."')")
 	ExecuteWebJS(webview, "SetCharacterOptions('shirt', '".. shirtOptions .."')")
 	ExecuteWebJS(webview, "SetCharacterOptions('pants', '".. pantOptions .."')")
 	ExecuteWebJS(webview, "SetCharacterOptions('shoes', '".. shoeOptions .."')")
@@ -33,8 +32,8 @@ function SetOptions(bodyOptions, shirtOptions, pantOptions, shoeOptions, hairOpt
 	SetInputMode(INPUT_GAMEANDUI)
 	SetWebVisibility(webview, WEB_VISIBLE)
 
-	SetCameraLocation(700,0,0,false)
-	SetCameraRotation(0,180,0,false)
+	--SetCameraLocation(700,0,0,false)
+	--SetCameraRotation(0,180,0,false)
 end
 AddRemoteEvent("characterize:SetOptions", SetOptions)
 
@@ -46,14 +45,16 @@ function HidePanel()
 	SetIgnoreMoveInput(false);
 	SetInputMode(INPUT_GAME)
 
-   	SetCameraLocation(0, 0, 0, false)
-	SetCameraRotation(0, 0, 0, false)
+   	--SetCameraLocation(0, 0, 0, false)
+	--SetCameraRotation(0, 0, 0, false)
 end
 AddEvent("characterize:HidePanel", HidePanel)
 
 function Change(type, value)
 	local player = GetPlayerId()
-	if (type == 'body') then
+	if (type == 'preset') then
+		SetPlayerClothingPreset(player, value)
+	elseif (type == 'body') then
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Body")
 		SkeletalMeshComponent:SetSkeletalMesh(USkeletalMesh.LoadFromAsset(value))
 		SkeletalMeshComponent:SetFloatParameterOnMaterials("PupilScale", 1.3)
@@ -73,6 +74,15 @@ function Change(type, value)
 		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing0")
 		local r, g, b, a = HexToRGBAFloat("0x"..value)
 		SkeletalMeshComponent:SetColorParameterOnMaterials("Hair Color", FLinearColor(r, g, b, a))
+	elseif (type == 'shirt_color') then
+		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing1")
+		local r, g, b, a = HexToRGBAFloat("0x"..value)
+		SkeletalMeshComponent:SetColorParameterOnMaterials("Clothing Color", FLinearColor(r, g, b, a))
+	elseif (type == 'pants_color') then
+		local SkeletalMeshComponent = GetPlayerSkeletalMeshComponent(player, "Clothing4")
+		local r, g, b, a = HexToRGBAFloat("0x"..value)
+		SkeletalMeshComponent:SetColorParameterOnMaterials("Clothing Color", FLinearColor(r, g, b, a))
+
 	end
 
 	CreateSound("click.wav")
@@ -84,3 +94,4 @@ function Submit(params)
 	CallEvent("characterize:HidePanel")
 end
 AddEvent("characterize:Submit", Submit)
+

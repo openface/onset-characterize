@@ -30,41 +30,10 @@ local shoeOptions = {
 local hairOptions = {
     [1] = "/Game/CharacterModels/SkeletalMesh/HZN_CH3D_Hair_Business_LP",
     [2] = "/Game/CharacterModels/SkeletalMesh/HZN_CH3D_Hair_Scientist_LP",
+    [3] = "/Game/CharacterModels/SkeletalMesh/HZN_CH3D_Police_Hair_LPR",
     [3] = "/Game/CharacterModels/SkeletalMesh/HZN_CH3D_Normal_Hair_01_LPR",
     [4] = "/Game/CharacterModels/SkeletalMesh/HZN_CH3D_Normal_Hair_03_LPR",
     [5] = "/Game/CharacterModels/SkeletalMesh/HZN_CH3D_Normal_Hair_02_LPR"
-}
-local hairColorOptions = {
-    -- brunette
-    [1] = "2d170e",
-    [2] = "4d2d1a",
-    [3] = "6d4730",
-    [4] = "a97e6d",
-    [5] = "cc9f88",
-    -- blondes
-    [6] = "d2b38c",
-    [7] = "ceb08a",
-    [8] = "ceae86",
-    [9] = "c9a980",
-    [10] = "e5c8a4",
-    -- naturals
-    [11] = "583322",
-    [12] = "714721",
-    [13] = "744729",
-    [14] = "412922",
-    [15] = "7b746e",
-    -- random
-    [16] = "471e08",
-    [17] = "fffa84",
-    [18] = "7c3e14",
-    [19] = "090909",
-    [20] = "b04f1b",
-    -- burning
-    [21] = "660000",
-    [22] = "af441c",
-    [23] = "da7931",
-    [24] = "e4c633",
-    [25] = "ffe86d"
 }
 
 AddRemoteEvent("characterize:GetOptions", function(player)
@@ -73,8 +42,7 @@ AddRemoteEvent("characterize:GetOptions", function(player)
         json_encode(shirtOptions), 
         json_encode(pantOptions), 
         json_encode(shoeOptions), 
-        json_encode(hairOptions), 
-        json_encode(hairColorOptions))
+        json_encode(hairOptions))
 end)
 
 AddRemoteEvent("characterize:Submit", function(player, params)
